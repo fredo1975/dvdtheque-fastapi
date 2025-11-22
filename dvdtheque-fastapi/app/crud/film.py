@@ -7,7 +7,7 @@ class CRUDFilm(CRUDBase[Film]):
 
     def get_with_relations(self, db: Session, id: int) -> Optional[Film]:
         return db.query(Film).options(
-           # joinedload(Film.director),
+           joinedload(Film.genres),
            # joinedload(Film.genres)
         ).filter(Film.id == id).first()
 
