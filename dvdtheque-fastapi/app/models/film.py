@@ -30,6 +30,7 @@ class Film(Base):
 
     # Foreign keys
     dvd_id = Column(Integer, ForeignKey("dvd.id", ondelete="SET NULL"), nullable=True)
+    dvd = relationship('Dvd', uselist=False, lazy='joined')
     #tmdb_id = Column(Integer, nullable=True)
     # Relationships
     genres = relationship("Genre", secondary="film_genre", back_populates="films")
