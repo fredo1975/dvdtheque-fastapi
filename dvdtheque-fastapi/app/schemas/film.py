@@ -2,7 +2,6 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, List
 from datetime import date, datetime
 
-
 class FilmBase(BaseModel):
     titre: str
     titre_o: Optional[str] = None
@@ -22,6 +21,12 @@ class FilmBase(BaseModel):
 class GenreBase(BaseModel):
     name: Optional[str] = None
 
+class PersonneBase(BaseModel):
+    nom: Optional[str] = None
+    prenom: Optional[str] = None
+    date_n: Optional[date] = None
+    profile_path: Optional[str] = None
+
 class FilmUpdate(BaseModel):
     titre: Optional[str] = None
     titre_o: Optional[str] = None
@@ -33,15 +38,22 @@ class FilmUpdate(BaseModel):
     director_id: Optional[int] = None
     genre_ids: Optional[List[int]] = None
 
-
-
 class GenreResponse(GenreBase):
     id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class PersonneResponse(PersonneBase):
+    id: int
+    #genres: Optional[List[GenreResponse]] = []
 
     model_config = ConfigDict(from_attributes=True)
 
 class FilmResponse(FilmBase):
     id: int
     genres: Optional[List[GenreResponse]] = []
+    realisateurs: Optional[List[PersonneResponse]] = []
+    acteurs: Optional[List[PersonneResponse]] = []
 
     model_config = ConfigDict(from_attributes=True)

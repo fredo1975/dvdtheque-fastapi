@@ -29,16 +29,26 @@ class Film(Base):
     date_sortie_dvd = Column(Date, nullable=True)
 
     # Foreign keys
-    #dvd_id = Column(Integer, ForeignKey("directors.id", ondelete="SET NULL"), nullable=True)
+    dvd_id = Column(Integer, ForeignKey("dvd.id", ondelete="SET NULL"), nullable=True)
     #tmdb_id = Column(Integer, nullable=True)
     # Relationships
     genres = relationship("Genre", secondary="film_genre", back_populates="films")
+    realisateurs = relationship("Personne", secondary="film_realisateur", back_populates="films")
+    acteurs = relationship("Personne", secondary="film_acteur", back_populates="films")
 
 
 # 1. Définition de la table de mapping (instance de Table, pas une classe)
 film_genre = Table('film_genre', Base.metadata,
     Column('film_id', Integer, ForeignKey('film.id'), primary_key=True),
     Column('genre_id', Integer, ForeignKey('genre.id'), primary_key=True)
+)
+film_realisateur = Table('film_realisateur', Base.metadata,
+    Column('film_id', Integer, ForeignKey('film.id'), primary_key=True),
+    Column('realisateur_id', Integer, ForeignKey('personne.id'), primary_key=True)
+)
+film_acteur = Table('film_acteur', Base.metadata,
+    Column('film_id', Integer, ForeignKey('film.id'), primary_key=True),
+    Column('acteur_id', Integer, ForeignKey('personne.id'), primary_key=True)
 )
 
 class Genre(Base):
@@ -48,8 +58,17 @@ class Genre(Base):
     name = Column(String(255), nullable=True)
     films = relationship("Film", secondary="film_genre", back_populates="genres")
 
+class Personne(Base):
+    __tablename__ = "personne"
 
-"""
+    id = Column(Integer, primary_key=True, index=True)
+    nom = Column(String(255), nullable=False)
+    prenom = Column(String(255), nullable=True)
+    date_n = Column(Date, nullable=True)
+    profile_path = Column(String(255), nullable=True)
+
+    films = relationship("Film", secondary="film_realisateur", back_populates="realisateurs")
+
 class Dvd(Base):
     __tablename__ = "dvd"
 
@@ -61,12 +80,3 @@ class Dvd(Base):
     format = Column(String(7), nullable=True)
     ripped = Column(Boolean, nullable=False)
     date_sortie = Column(Date, nullable=True)
-
-class Personne(Base):
-    __tablename__ = "personne"
-
-    id = Column(Integer, primary_key=True, index=True)
-    nom = Column(String(255), nullable=False)
-    prenom = Column(String(255), nullable=True)
-    date_n = Column(Date, nullable=True)
-"""
