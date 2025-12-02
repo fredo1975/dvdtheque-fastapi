@@ -1,0 +1,15 @@
+# Exclure les répertoires d'environnement virtuel
+venv/
+.venv/
+
+# Exclure les dossiers de construction/cache
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# Exclure les configurations d'IDE et les fichiers de log
+.git
+.gitignore
+.vscode
+*.log
